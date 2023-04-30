@@ -19,7 +19,7 @@ def get_url(api_key=get_api_key(), topic = "tesla", language = "en"):
         ud - danish
         zh - chinese
 
-        Topic is tesla by default but you can choose other topic
+        Topic is tesla by default, but you can choose other topic
         """
     url = f"https://newsapi.org/v2/everything?q={topic}&from=2023-03-29" \
           "&sortBy=publishedAt&apiKey=" \
