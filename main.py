@@ -28,8 +28,6 @@ def get_url(api_key=get_api_key(), topic = "tesla", language = "en",
     return params
 #make request
 request = requests.get("https://newsapi.org/v2/everything", params=get_url())
-print(request.url)
-
 
 #get dict with data
 content = request.json()
