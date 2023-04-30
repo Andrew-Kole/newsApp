@@ -1,43 +1,34 @@
 import requests
-from modules.acc_info_giver import get_api_key
 from modules.mail_sender import send_mail
 import datetime
+import os
+import typing
 
-def get_url(api_key=get_api_key(), topic = "tesla", language = "en",
-            date=datetime.date.today().isoformat(), sortBy="publishedAt" ):
-    """language is English by default, possible languages are
-        ar - arabic
-        de - german
-        en - englishdatetime.date.today().isoformat()
-        es - spanish
-        fr - french
-        he - hebrew
-        it - italian
-        nl - niderlandian
-        no - norwegian
-        pt - portuguese
-        ru - russian
-        sv - swedish
-        ud - danish
-        zh - chinese
+API_KEY: typing.Final = os.environ["API_KEY"]
 
-        Topic is tesla by default, but you can choose other topic
-        """
+def get_news(api_key, topic, date, language = "en", sortBy="publishedAt"):
     params = {"q": topic, "from": date, "sortBy": sortBy,
               "apiKey": api_key, "language": language}
-    return params
-#make request
-request = requests.get("https://newsapi.org/v2/everything", params=get_url())
 
-#get dict with data
-content = request.json()
+    r = requests.get("https://newsapi.org/v2/everything", params=get_url())
+    r.raise_for_status() 
+    content = request.json()
+    return content
 
-#get articles title and description and sent emails
-message = "Subject: Today's news" + "\n"
-for article in content["articles"][:20]:
-    if article["title"] and article["description"] is not None:
+def make_message(content):
+    message = "Subject: Today's news" + "\n"
+    for article in content["articles"][:20]:
+      if article["title"] and article["description"] is not None:
         message = message + article["title"] + "\n" + \
                   article["description"] + "\n" +\
                   article["url"] + 3 * "\n"
+    return message
 
-send_mail(message.encode('utf-8'))
+def main():
+    content = get_news(API_KEY, "tesla", datetime.now())
+    message = make_message(content) 
+    send_mail(message.encode('utf-8'))
+
+if __name__ == "__main__":
+     main()         
+
