@@ -21,9 +21,12 @@ def get_url(api_key=get_api_key(), topic = "tesla", language = "en"):
 
         Topic is tesla by default, but you can choose other topic
         """
-    url = f"https://newsapi.org/v2/everything?q={topic}&from=2023-03-29" \
-          "&sortBy=publishedAt&apiKey=" \
-          f"{api_key}&language={language}"
+   # url = f"https://newsapi.org/v2/everything?q={topic}&from=2023-03-29" \
+    #      "&sortBy=publishedAt&apiKey=" \
+     #     f"{api_key}&language={language}"
+    url = "https://newsapi.org/v2/everything?q=" + topic + \
+          "&from=2023-03-29&sortBy=publishedAt&apiKey=" + api_key +\
+          "&language=" + language
     return url
 #make request
 request = requests.get(get_url())
