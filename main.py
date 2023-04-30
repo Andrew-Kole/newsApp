@@ -9,5 +9,9 @@ request = requests.get(get_url())
 content = request.json()
 
 #get articles title and description and sent emails
-message = "".join(article["title"] + "\n" + article["description"] + "\n"*3 for article in content["articles"])
+message = ""
+for article in content["articles"]:
+    if article["title"] and article["description"] is not None:
+        message = message + article["title"] + "\n" + article["description"] + "\n"*3
+
 send_mail(message.encode('utf-8'))
